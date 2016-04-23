@@ -1,13 +1,14 @@
 package com.chris.ui.controller;
 
+
 import javafx.fxml.FXML;
+import javafx.scene.effect.Blend;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
-public class ImageDisplayerController {
+public class BlurController {
 	
 	@FXML
 	private ImageView viewer;
@@ -15,36 +16,25 @@ public class ImageDisplayerController {
 	@FXML
 	private Rectangle rectangle;
 	
-	private Reflection reflection = new Reflection();
-	
 	@FXML
 	private void initialize() {
-		Rectangle clip = new Rectangle(viewer.getFitWidth(), viewer.getFitHeight());
-		clip.setArcWidth(20);
-		clip.setArcHeight(20);
-		viewer.setClip(clip);
-		
-		viewer.setEffect(reflection);
+		String url = "http://cdn.zumic.com/wp-content/uploads/2013/03/pink-floyd-dark-side-of-the-moon-cover-art-oil-water.jpg";
+		viewer.setImage(new Image(url));
+		viewer.setEffect(new Blend());
 	}
 	
 	@FXML
 	private void onHover() {
 		GaussianBlur blur = new GaussianBlur();
 		blur.setRadius(40);
-		blur.setInput(reflection);
-		
 		viewer.setEffect(blur);
 		rectangle.setOpacity(0.5);
 	}
 	
 	@FXML
 	private void onExit() {
-		viewer.setEffect(reflection);
+		viewer.setEffect(new Blend());
 		rectangle.setOpacity(0);
-	}
-	
-	public void setImage(String uri) {
-		viewer.setImage(new Image(uri));
 	}
 
 }

@@ -55,7 +55,7 @@ public class MainApp extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.initStyle(StageStyle.TRANSPARENT);
 		primaryStage.setResizable(false);
-		
+		primaryStage.setAlwaysOnTop(true);
 		this.primaryStage = primaryStage;
 		initRootLayout();
 	}
