@@ -43,7 +43,7 @@ public class MainApp extends Application {
 	// http://streaming.radionomy.com/MUSICFORHEALING-RELAXATION?lang=en-us
 	// http://radiostreams.radioup.com:2226
 	
-	private static final String STATION = "http://stream-tx3.radioparadise.com/aac-320";
+	private static final String STATION = "http://listen.181fm.com/181-90salt_128k.mp3";
 	private Stage primaryStage;
 	private static AnchorPane rootLayout;
 	private static RadioPlayer rp;
