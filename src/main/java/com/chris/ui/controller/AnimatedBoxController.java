@@ -4,6 +4,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
@@ -12,12 +13,18 @@ public class AnimatedBoxController {
 	@FXML
 	private HBox box;
 	
+	@FXML
+	private Button button;
+	
+	
 	private double OFF = 0;
 	private double ON = 100;
 	
 	
 	@FXML
 	private void initialize() {
+//		button.setText("Hola");
+		
 	}
 	
 	@FXML

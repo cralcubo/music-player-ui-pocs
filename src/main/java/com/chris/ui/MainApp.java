@@ -30,7 +30,7 @@ import javafx.stage.StageStyle;
 public class MainApp extends Application {
 	// http://50.7.74.82:8193
 	// http://7609.live.streamtheworld.com:80/977_ALTERN_SC
-	// http://stream-tx3.radioparadise.com/aac-128
+	// http://stream-tx3.radioparadise.com/aac-320
 	// http://icecast.omroep.nl:80/3fm-bb-mp3
 	// http://server1.radiodanz.com:8020/
 	// http://streaming.radionomy.com/Classic-Rap
@@ -43,7 +43,7 @@ public class MainApp extends Application {
 	// http://streaming.radionomy.com/MUSICFORHEALING-RELAXATION?lang=en-us
 	// http://radiostreams.radioup.com:2226
 	
-	private static final String STATION = "http://listen.181fm.com/181-90salt_128k.mp3";
+	private static final String STATION = "http://stream-tx3.radioparadise.com/aac-320";
 	private Stage primaryStage;
 	private static AnchorPane rootLayout;
 	private static RadioPlayer rp;
