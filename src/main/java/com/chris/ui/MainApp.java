@@ -42,8 +42,17 @@ public class MainApp extends Application {
 	// http://streaming64.radionomy.com/SleepTime?lang=en-us&br=64
 	// http://streaming.radionomy.com/MUSICFORHEALING-RELAXATION?lang=en-us
 	// http://radiostreams.radioup.com:2226
+	// 1.FM
+	// http://192.99.35.93:6578 Rock
+	// http://185.33.21.112:11077 classic
+	// http://185.33.21.247:8068 90s
+	// http://185.33.21.245:8078 top 40
+	// http://193.34.51.67:80/
+	// http://89.16.185.174:8004/stream
+	// http://108.61.73.117:8128/ top 40
+	// http://87.98.180.164:8300/ ita
 	
-	private static final String STATION = "http://stream-tx3.radioparadise.com/aac-320";
+	private static final String STATION = "http://185.33.22.15:11093";
 	private Stage primaryStage;
 	private static AnchorPane rootLayout;
 	private static RadioPlayer rp;
