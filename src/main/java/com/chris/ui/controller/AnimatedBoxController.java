@@ -5,6 +5,8 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
@@ -16,6 +18,12 @@ public class AnimatedBoxController {
 	@FXML
 	private Button button;
 	
+	@FXML
+	private ToggleButton toggle;
+	
+	@FXML
+	private Slider slider;
+	
 	
 	private double OFF = 0;
 	private double ON = 100;
@@ -23,8 +31,27 @@ public class AnimatedBoxController {
 	
 	@FXML
 	private void initialize() {
-//		button.setText("Hola");
+		button.setText("Hola");
 		
+		toggle.setMinSize(148, 148); 
+		toggle.setMaxSize(148, 148);
+		
+		slider.setValue(100);
+	}
+	
+	@FXML
+	private void toggleAction() {
+		if(toggle.isSelected()) {
+			System.out.println(".:. Toggle selected, play music!");
+		}
+		else {
+			System.out.println(".:. Toggle de-selected, stop music!");
+		}
+	}
+	
+	@FXML
+	private void sliderAction() {
+		System.out.println(".:. Slider value is=" + slider.getValue());
 	}
 	
 	@FXML

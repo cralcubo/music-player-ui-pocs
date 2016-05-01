@@ -52,7 +52,7 @@ public class MainApp extends Application {
 	// http://108.61.73.117:8128/ top 40
 	// http://87.98.180.164:8300/ ita
 	
-	private static final String STATION = "http://185.33.22.15:11093";
+	private static final String STATION = "http://87.98.180.164:8300/";
 	private Stage primaryStage;
 	private static AnchorPane rootLayout;
 	private static RadioPlayer rp;
