@@ -44,6 +44,7 @@ public class MainApp extends Application {
 	// http://radiostreams.radioup.com:2226
 	// 1.FM
 	// http://192.99.35.93:6578 Rock
+	// http://185.33.21.112:11134 High voltage
 	// http://185.33.21.112:11077 classic
 	// http://185.33.21.247:8068 90s
 	// http://185.33.21.245:8078 top 40
@@ -51,8 +52,9 @@ public class MainApp extends Application {
 	// http://89.16.185.174:8004/stream
 	// http://108.61.73.117:8128/ top 40
 	// http://87.98.180.164:8300/ ita
+	// http://184.95.52.178:9150
 	
-	private static final String STATION = "http://87.98.180.164:8300/";
+	private static final String STATION = "http://streaming.radionomy.com/Classic-Rap";
 	private Stage primaryStage;
 	private static AnchorPane rootLayout;
 	private static RadioPlayer rp;
@@ -111,7 +113,7 @@ public class MainApp extends Application {
 	
 	public static void main(String[] args) throws InterruptedException {
 		rp = new RadioPlayer();
-		rp.setVolume(80);
+//		rp.setVolume(80);
 		
 		Thread t1 = new Thread(() ->launch(args));
 		t1.start();
