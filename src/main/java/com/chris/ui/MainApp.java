@@ -10,6 +10,8 @@ import bo.roman.radio.cover.model.Album;
 import bo.roman.radio.cover.model.CoverArt;
 import bo.roman.radio.cover.model.Radio;
 import bo.roman.radio.player.RadioPlayer;
+import bo.roman.radio.player.listener.CodecInformationNotifier;
+import bo.roman.radio.player.listener.CodecInformationSubject;
 import bo.roman.radio.player.listener.MediaMetaNotifier;
 import bo.roman.radio.player.listener.MediaMetaObserver;
 import bo.roman.radio.player.listener.MediaMetaSubject;
@@ -54,7 +56,7 @@ public class MainApp extends Application {
 	// http://87.98.180.164:8300/ ita
 	// http://184.95.52.178:9150
 	
-	private static final String STATION = "http://streaming.radionomy.com/Classic-Rap";
+	private static final String STATION = "file:///Users/christian/Desktop/06.Echoes.flac";
 	private Stage primaryStage;
 	private static AnchorPane rootLayout;
 	private static RadioPlayer rp;
@@ -102,7 +104,15 @@ public class MainApp extends Application {
 			MediaMetaSubject mms = new MediaMetaNotifier();
 			mms.registerObserver(new CoverUpdatedNotifier(rootLayout));
 			mms.registerObserver(new PrintRadioPlayerObserver());
-			rp.addEventsListener(new RadioPlayerEventListener(rp, mms));
+			
+			CodecInformationSubject cis = new CodecInformationNotifier();
+			cis.registerObservers(ci -> {
+				System.out.println("****************************");
+				System.out.println(ci);
+				System.out.println("****************************");
+			});
+			
+			rp.addEventsListener(new RadioPlayerEventListener(rp, mms, cis));
 			
 			primaryStage.show();
 		} catch (Exception e) {
@@ -113,7 +123,7 @@ public class MainApp extends Application {
 	
 	public static void main(String[] args) throws InterruptedException {
 		rp = new RadioPlayer();
-//		rp.setVolume(80);
+		rp.setVolume(80);
 		
 		Thread t1 = new Thread(() ->launch(args));
 		t1.start();

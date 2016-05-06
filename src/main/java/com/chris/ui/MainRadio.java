@@ -3,12 +3,17 @@ package com.chris.ui;
 import java.util.List;
 
 import bo.roman.radio.player.RadioPlayer;
+import bo.roman.radio.player.listener.CodecInformationNotifier;
+import bo.roman.radio.player.listener.CodecInformationSubject;
+import bo.roman.radio.player.listener.MediaMetaNotifier;
+import bo.roman.radio.player.listener.MediaMetaSubject;
+import bo.roman.radio.player.listener.PrintRadioPlayerObserver;
+import bo.roman.radio.player.listener.RadioPlayerEventListener;
 import uk.co.caprica.vlcj.binding.internal.libvlc_media_stats_t;
 import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.TrackInfo;
 import uk.co.caprica.vlcj.player.TrackType;
-import uk.co.caprica.vlcj.player.media.Media;
 
 public class MainRadio {
 	
@@ -22,7 +27,16 @@ public class MainRadio {
 	
 	public MainRadio() {
 		rp = new RadioPlayer();
-		rp.addEventsListener(new MyEventHandler());
+		MediaMetaSubject mms = new MediaMetaNotifier();
+		mms.registerObserver(new PrintRadioPlayerObserver());
+		
+		CodecInformationSubject cis = new CodecInformationNotifier();
+		cis.registerObservers(ci -> {
+			System.out.println("****************************");
+			System.out.println(ci);
+			System.out.println("****************************");
+		});
+		rp.addEventsListener(new RadioPlayerEventListener(rp, mms, cis));
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
