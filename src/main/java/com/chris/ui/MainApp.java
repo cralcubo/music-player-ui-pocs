@@ -56,7 +56,7 @@ public class MainApp extends Application {
 	// http://87.98.180.164:8300/ ita
 	// http://184.95.52.178:9150
 	
-	private static final String STATION = "file:///Users/christian/Desktop/06.Echoes.flac";
+	private static final String STATION = "http://streaming64.radionomy.com/SleepTime?lang=en-us&br=320";
 	private Stage primaryStage;
 	private static AnchorPane rootLayout;
 	private static RadioPlayer rp;
