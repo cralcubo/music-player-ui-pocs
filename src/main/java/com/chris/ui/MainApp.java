@@ -1,6 +1,7 @@
 package com.chris.ui;
 
 import java.net.URI;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import com.chris.ui.controller.ImageDisplayerController;
@@ -56,7 +57,7 @@ public class MainApp extends Application {
 	// http://87.98.180.164:8300/ ita
 	// http://184.95.52.178:9150
 	
-	private static final String STATION = "http://streaming64.radionomy.com/SleepTime?lang=en-us&br=320";
+	private static final String STATION = "http://listen.181fm.com/181-hairband_128k.mp3";
 	private Stage primaryStage;
 	private static AnchorPane rootLayout;
 	private static RadioPlayer rp;
@@ -135,6 +136,7 @@ public class MainApp extends Application {
 	}
 	
 	private class CoverUpdatedNotifier implements MediaMetaObserver {
+		private static final String DEFAULTLOGO_PATH = "src/main/resources/pimped-radio-glossy.jpeg";
 		private Node node;
 		
 		public CoverUpdatedNotifier(Node node) {
@@ -148,7 +150,9 @@ public class MainApp extends Application {
 					.flatMap(Album::getCoverArt)
 					.flatMap(CoverArt::getMediumUri);
 			
-			String cover = ca.orElse(rpe.getRadio().flatMap(Radio::getLogoUri).get()).toString();
+			Optional<URI> cr = rpe.getRadio().flatMap(Radio::getLogoUri);
+			
+			String cover = ca.orElse(cr.orElse(Paths.get(DEFAULTLOGO_PATH).toUri())).toString();
 			event.setImageUrl(cover);
 			node.fireEvent(event);
 		}
