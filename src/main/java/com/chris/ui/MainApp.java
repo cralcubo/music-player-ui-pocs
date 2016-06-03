@@ -2,6 +2,8 @@ package com.chris.ui;
 
 import java.net.URI;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.chris.ui.controller.ImageDisplayerController;
@@ -11,13 +13,9 @@ import bo.roman.radio.cover.model.Album;
 import bo.roman.radio.cover.model.CoverArt;
 import bo.roman.radio.cover.model.Radio;
 import bo.roman.radio.player.RadioPlayer;
-import bo.roman.radio.player.listener.CodecInformationNotifier;
-import bo.roman.radio.player.listener.CodecInformationSubject;
-import bo.roman.radio.player.listener.MediaMetaNotifier;
-import bo.roman.radio.player.listener.MediaMetaObserver;
-import bo.roman.radio.player.listener.MediaMetaSubject;
-import bo.roman.radio.player.listener.PrintRadioPlayerObserver;
 import bo.roman.radio.player.listener.RadioPlayerEventListener;
+import bo.roman.radio.player.listener.Observer;
+import bo.roman.radio.player.model.CodecInformation;
 import bo.roman.radio.player.model.RadioPlayerEntity;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -29,6 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 
 public class MainApp extends Application {
 	// http://50.7.74.82:8193
@@ -56,8 +55,11 @@ public class MainApp extends Application {
 	// http://108.61.73.117:8128/ top 40
 	// http://87.98.180.164:8300/ ita
 	// http://184.95.52.178:9150
+	// http://193.34.51.67:80/
+	// http://195.154.72.66:443
+	// http://99.198.110.162:7042
 	
-	private static final String STATION = "http://listen.181fm.com/181-hairband_128k.mp3";
+	private static final String STATION = "http://stream-tx3.radioparadise.com/aac-320";
 	private Stage primaryStage;
 	private static AnchorPane rootLayout;
 	private static RadioPlayer rp;
@@ -102,18 +104,21 @@ public class MainApp extends Application {
 			ImageDisplayerController idc = loader.getController(); 
 			rootLayout.addEventHandler(UpdateImageEvent.UPDATE_IMAGE, event -> idc.setImage(event.getImageUrl()));
 			
-			MediaMetaSubject mms = new MediaMetaNotifier();
-			mms.registerObserver(new CoverUpdatedNotifier(rootLayout));
-			mms.registerObserver(new PrintRadioPlayerObserver());
+			// Observers
+			List<Observer<RadioPlayerEntity>> rpeO = Arrays.asList(new CoverUpdatedNotifier(rootLayout), new PrintRadioPlayerObserver());
 			
-			CodecInformationSubject cis = new CodecInformationNotifier();
-			cis.registerObservers(ci -> {
-				System.out.println("****************************");
-				System.out.println(ci);
-				System.out.println("****************************");
-			});
+			Observer<CodecInformation> codecObserver = new Observer<CodecInformation>() {
+				@Override
+				public void update(CodecInformation t) {
+					System.out.println("****************************");
+					System.out.println(t);
+					System.out.println("****************************");
+				}
+			};
+			List<Observer<CodecInformation>> cifO = Arrays.asList(codecObserver);
+			MediaPlayerEventAdapter eventsAdapter = new RadioPlayerEventListener(rpeO, cifO);
 			
-			rp.addEventsListener(new RadioPlayerEventListener(rp, mms, cis));
+			rp.addEventsListener(eventsAdapter);
 			
 			primaryStage.show();
 		} catch (Exception e) {
@@ -124,7 +129,7 @@ public class MainApp extends Application {
 	
 	public static void main(String[] args) throws InterruptedException {
 		rp = new RadioPlayer();
-		rp.setVolume(80);
+//		rp.setVolume(80);
 		
 		Thread t1 = new Thread(() ->launch(args));
 		t1.start();
@@ -135,7 +140,7 @@ public class MainApp extends Application {
 		
 	}
 	
-	private class CoverUpdatedNotifier implements MediaMetaObserver {
+	private class CoverUpdatedNotifier implements Observer<RadioPlayerEntity> {
 		private static final String DEFAULTLOGO_PATH = "src/main/resources/pimped-radio-glossy.jpeg";
 		private Node node;
 		
@@ -148,7 +153,7 @@ public class MainApp extends Application {
 			UpdateImageEvent event = new UpdateImageEvent(UpdateImageEvent.UPDATE_IMAGE);
 			Optional<URI> ca = rpe.getAlbum()
 					.flatMap(Album::getCoverArt)
-					.flatMap(CoverArt::getMediumUri);
+					.flatMap(CoverArt::getLargeUri);
 			
 			Optional<URI> cr = rpe.getRadio().flatMap(Radio::getLogoUri);
 			
