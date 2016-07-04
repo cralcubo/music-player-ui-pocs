@@ -1,6 +1,7 @@
 package com.chris.ui;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import bo.roman.radio.player.RadioPlayer;
@@ -16,7 +17,7 @@ public class MainRadio {
 	// AAC: http://stream-tx3.radioparadise.com/aac-128
 	// MP3: http://listen.181fm.com/181-90salt_128k.mp3
 
-	private static final String STATION = "http://amp.cesnet.cz:8000/cro-d-dur-256.ogg";
+	private static final String STATION = "/Users/christian/Desktop/06.Echoes.flac";
 
 	private RadioPlayer rp;
 
@@ -34,7 +35,7 @@ public class MainRadio {
 			}
 		};
 		List<Observer<CodecInformation>> cifO = Arrays.asList(codecObserver);
-		MediaPlayerEventAdapter eventsAdapter = new RadioPlayerEventListener(rpeO, cifO);
+		MediaPlayerEventAdapter eventsAdapter = new RadioPlayerEventListener(rpeO, cifO, Collections.emptyList());
 
 		rp.addEventsListener(eventsAdapter);
 

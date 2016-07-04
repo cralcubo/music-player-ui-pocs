@@ -1,8 +1,9 @@
-package com.chris.ui;
+	package com.chris.ui;
 
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,9 @@ public class MainApp extends Application {
 	// http://stream-tx3.radioparadise.com/aac-320
 	// http://icecast.omroep.nl:80/3fm-bb-mp3
 	// http://server1.radiodanz.com:8020/
+	// http://us1.internet-radio.com:8122/live
 	// http://streaming.radionomy.com/Classic-Rap
+	// http://208.77.21.31:14930
 	// http://184.164.135.70:8074
 	// http://icecast.omroep.nl:80/radio4-bb-mp3
 	// http://195.154.182.222:27147/973
@@ -43,6 +46,7 @@ public class MainApp extends Application {
 	// http://listen.181fm.com/181-hairband_128k.mp3
 	// http://streaming64.radionomy.com/SleepTime?lang=en-us&br=64
 	// http://streaming.radionomy.com/MUSICFORHEALING-RELAXATION?lang=en-us
+	// http://streaming212.radionomy.com:80/MusicoftheGodsRadio
 	// http://radiostreams.radioup.com:2226
 	// 1.FM
 	// http://192.99.35.93:6578 Rock
@@ -58,8 +62,12 @@ public class MainApp extends Application {
 	// http://193.34.51.67:80/
 	// http://195.154.72.66:443
 	// http://99.198.110.162:7042
+	// http://uk2.internet-radio.com:8008/
+	// http://amp.cesnet.cz:8000/cro-d-dur.flac
+	// http://91.121.38.100:8030
+	// http://51.255.127.128:8026/
 	
-	private static final String STATION = "http://stream-tx3.radioparadise.com/aac-320";
+	private static final String STATION = "http://185.33.21.112:11134";
 	private Stage primaryStage;
 	private static AnchorPane rootLayout;
 	private static RadioPlayer rp;
@@ -116,7 +124,7 @@ public class MainApp extends Application {
 				}
 			};
 			List<Observer<CodecInformation>> cifO = Arrays.asList(codecObserver);
-			MediaPlayerEventAdapter eventsAdapter = new RadioPlayerEventListener(rpeO, cifO);
+			MediaPlayerEventAdapter eventsAdapter = new RadioPlayerEventListener(rpeO, cifO, Collections.emptyList());
 			
 			rp.addEventsListener(eventsAdapter);
 			
@@ -129,7 +137,7 @@ public class MainApp extends Application {
 	
 	public static void main(String[] args) throws InterruptedException {
 		rp = new RadioPlayer();
-//		rp.setVolume(80);
+		rp.setVolume(80);
 		
 		Thread t1 = new Thread(() ->launch(args));
 		t1.start();
@@ -143,14 +151,15 @@ public class MainApp extends Application {
 	private class CoverUpdatedNotifier implements Observer<RadioPlayerEntity> {
 		private static final String DEFAULTLOGO_PATH = "src/main/resources/pimped-radio-glossy.jpeg";
 		private Node node;
+		private UpdateImageEvent event;
 		
 		public CoverUpdatedNotifier(Node node) {
 			this.node = node;
+			event = new UpdateImageEvent(UpdateImageEvent.UPDATE_IMAGE);
 		}
 		
 		@Override
 		public void update(RadioPlayerEntity rpe) {
-			UpdateImageEvent event = new UpdateImageEvent(UpdateImageEvent.UPDATE_IMAGE);
 			Optional<URI> ca = rpe.getAlbum()
 					.flatMap(Album::getCoverArt)
 					.flatMap(CoverArt::getLargeUri);
